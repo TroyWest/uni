@@ -15,15 +15,11 @@ public class SimpleServer {
                 InetAddress clientAddress = client.getInetAddress();
                 System.out.println("Connection from: " + clientAddress.getHostName());
                 out.println("Hello, " + clientAddress.getHostName());
-                out.println("Your IP address is " + clientAddress.getHostAddress());
-                Thread.sleep(3000);
+                out.println("Your IP address is " + clientAddress.getHostAddress());                
                 client.close();
             }
-
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
-        } catch (InterruptedException e) {
-
         }
         
     }
