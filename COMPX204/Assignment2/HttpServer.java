@@ -38,12 +38,12 @@ class HttpServer {
     public static void main(String args[]) {
         try {
             // write something to the console here
-            ServerSocket serverSocket = new ServerSocket(8080);
-            // Socket client = serverSocket.accept();
+            ServerSocket serverSocket = new ServerSocket(8080);            
             while (true) {
-                HttpServerSession session = new HttpServerSession(serverSocket.accept());// client);
+                HttpServerSession session = new HttpServerSession(serverSocket.accept());
                 session.start();
             }
+            serverSocket.close();
         } catch (IOException e) {
 
         }
