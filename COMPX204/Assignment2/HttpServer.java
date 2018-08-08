@@ -10,6 +10,18 @@ class HttpServerSession extends Thread {
         System.out.println("Connection on port " + connectionSocket.getPort());
     }
 
+    public void run() {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(httpServerSessionSocket.getInputStream()));
+
+            String header = reader.readLine();
+            while(reader.readLine() != null){}
+            System.out.println(header);
+        } catch (IOException e) {
+
+        }
+    }
+
 }
 
 class HttpServer {
@@ -20,6 +32,7 @@ class HttpServer {
             // Socket client = serverSocket.accept();
             while (true) {
                 HttpServerSession session = new HttpServerSession(serverSocket.accept());// client);
+                session.start();
             }
         } catch (IOException e) {
 
