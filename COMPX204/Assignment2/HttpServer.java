@@ -14,9 +14,19 @@ class HttpServerSession extends Thread {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(httpServerSessionSocket.getInputStream()));
 
-            String header = reader.readLine();
-            while(reader.readLine() != null){}
-            System.out.println(header);
+            String request = reader.readLine();
+
+            String parts[] = request.split(" ");
+            if (parts.length != 3) {
+                httpServerSessionSocket.close();
+                return;
+            } else {
+                if (parts[0].compareTo("GET") == 0) {
+                    System.out.println(parts[1]);
+                }
+                httpServerSessionSocket.close();
+            }
+
         } catch (IOException e) {
 
         }
