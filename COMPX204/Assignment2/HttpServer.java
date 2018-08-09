@@ -1,3 +1,4 @@
+//favicon sourced from https://www.favicon-generator.org
 import java.net.*;
 import java.io.*;
 import java.util.*;
