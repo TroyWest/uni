@@ -10,6 +10,7 @@ class HttpServerSession extends Thread {
     private String fileName;
     private Date date;
     private SimpleDateFormat df;
+    private FileInputStream fin; 
 
     HttpServerSession(Socket connectionSocket) {
         httpServerSessionSocket = connectionSocket;
@@ -22,34 +23,16 @@ class HttpServerSession extends Thread {
         try {
             reader = new BufferedReader(new InputStreamReader(httpServerSessionSocket.getInputStream()));
             writer = new BufferedOutputStream(httpServerSessionSocket.getOutputStream());
-            FileInputStream fin;
-            String request = reader.readLine();
+                      
 
-            Boolean wellFormed = processRequest(request);
+            Boolean wellFormed = processRequest();
 
             if (wellFormed) {
                 File page = new File(fileName);
-                while (true) {
-                    String line = reader.readLine();
-                    if (line == null) {
+                
+                sendResponse(page);                                
+            } else {
 
-                    }
-                    if (line.compareTo("") == 0) {
-                        break;
-                    }
-                }
-                if (page.exists()) {
-                    fin = new FileInputStream(page);
-
-                    System.out.println("Sending Response");                    
-                    println(writer, "HTTP/1.1 200 OK");
-                    println(writer, "Date: " + df.format(date));
-                    println(writer, "");
-
-                    SendFile(fin);
-                } else {
-                    send404();
-                }
             }
             httpServerSessionSocket.close();
 
@@ -58,12 +41,21 @@ class HttpServerSession extends Thread {
         IOException e) {
             System.err.println("IO Error" + e.getMessage());
         }
-    }
+    }    
 
-    private Boolean processRequest(String request) {
+    private Boolean processRequest() throws IOException {
+        String request = reader.readLine();
         String parts[] = request.split(" ");
-        if (parts.length != 3) {
-            
+        while (true) {
+            String line = reader.readLine();
+            if (line == null) {
+                return false;
+            }
+            if (line.compareTo("") == 0) {
+                break;
+            }
+        }
+        if (parts.length != 3) {            
             return false;
         } else {
             if (parts[0].compareTo("GET") == 0) {
@@ -78,10 +70,31 @@ class HttpServerSession extends Thread {
         }
     }
 
+    private void sendResponse(File page) throws IOException {
+        if (page.exists()) {
+            fin = new FileInputStream(page);
+
+            System.out.println("Sending Response");                    
+            println(writer, "HTTP/1.1 200 OK");
+            println(writer, "Date: " + df.format(date));
+            println(writer, "");
+
+            SendFile(fin);
+        } else {
+            send404();
+        }
+    }
+
     private void send404() throws IOException {
         println(writer, "HTTP/1.1 404 File Not Found");
         println(writer, "");
         println(writer, "File not found");
+    }
+
+    private void send500() throws IOException {
+        println(writer, "HTTP/1.1 500 Internal Server Error");
+        println(writer, "");
+        println(writer, "<h1>Internal Server Error</h1><p>Please try again later</p>");
     }
 
     private void SendFile(FileInputStream fin) throws IOException {
