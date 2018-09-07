@@ -32,7 +32,7 @@ class TftpServerWorker extends Thread {
 class TftpServer {
     public void start_server() {
         try {
-            DatagramSocket ds = new DatagramSocket();
+            DatagramSocket ds = new DatagramSocket(6969);
             System.out.println("TftpServer on port " + ds.getLocalPort());
 
             for (;;) {
