@@ -1,4 +1,5 @@
 import java.net.*;
+import java.nio.ByteBuffer;
 import java.io.*;
 import java.util.*;
 import Tftp.TftpUtilities;
@@ -13,9 +14,13 @@ public class TftpClient {
             DatagramSocket socket = new DatagramSocket(6969);
             String fileName = args[0];
 
-            byte[] buf = {TftpUtilities.RRQ};
+            
+            byte[] buf = fileName.getBytes();
             //buf. fileName.getBytes();
             
+            ByteBuffer bab = ByteBuffer.allocate(buf.length + 1);
+
+
             // DatagramPacket packet = new DatagramPacket(buf, length);
 
             socket.close();
