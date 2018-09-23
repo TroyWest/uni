@@ -15,6 +15,13 @@ public class TftpClient {
         return data;
     }
 
+    public static byte[] createAckPacket(byte block){
+        byte[] ackPack = new byte[2];
+        ackPack[0] =  TftpUtility.ACK;
+        ackPack[1] = block;
+        return ackPack;
+    }
+
     public static void main(String[] args) {
         if (args.length < 3) {
             System.out.println("Nope!");
@@ -26,7 +33,7 @@ public class TftpClient {
             DatagramSocket socket = new DatagramSocket();
             String fileName = args[2];
             System.out.println("Connecting to " + args[0] + ":" + port);
-            // socket.connect(serverAddress, port);
+            
             byte[] buf = new byte[1472];
 
             DatagramPacket p = TftpUtility.packRRQDatagramPacket(fileName.getBytes()); // new DatagramPacket(buf, 1472);
@@ -35,22 +42,32 @@ public class TftpClient {
             socket.send(p);
 
             p = new DatagramPacket(buf, 1472);
-            socket.receive(p);
 
-            Byte response = TftpUtility.checkPacketType(p);
-            if (response == TftpUtility.ERROR) {
-                TftpUtility.printErrorString(p);
-            } else {
-                byte blockNumber = TftpUtility.extractBlockSeq(p);
-                if (blockNumber == -1) {
-                    System.out.println("Not a data packet");
-                    return;
-                } else {
-                    byte[] data = unpackDataPacket(p);
-                    String s = new String(data);
-                    System.out.println(s);
+            boolean reading = true;
+            while (reading) {
+                socket.receive(p);
+
+                Byte response = TftpUtility.checkPacketType(p);
+                if (response == TftpUtility.ERROR) {
+                    TftpUtility.printErrorString(p);
+                } else {                    
+                    byte blockNumber = TftpUtility.extractBlockSeq(p);
+                    if (blockNumber == -1) {
+                        System.out.println("Not a data packet");
+                        return;
+                    } else {
+                        byte[] data = unpackDataPacket(p);                        
+                        String s = new String(data);
+                        System.out.println(s);
+                        
+                        p.setData(createAckPacket(blockNumber));
+                        socket.send(p);
+                        if(p.getLength() < 512) {
+                            reading = false;
+                        }                        
+                    }
+
                 }
-
             }
 
             socket.close();

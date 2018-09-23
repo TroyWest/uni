@@ -4,6 +4,17 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - MyTLSFileClient",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "MyTLSFileClient",
+            "args": "localhost 40202"
+        },
         {
             "type": "java",
             "name": "Debug (Launch)",
@@ -22,7 +33,7 @@
             "console": "internalConsole",
             "stopOnEntry": false,
             "mainClass": "TftpClient",
-            "args": "test.txt"
+            "args": "localhost 6969 test.txt"
         },
         {
             "type": "java",
