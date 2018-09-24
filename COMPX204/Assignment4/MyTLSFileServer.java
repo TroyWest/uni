@@ -4,6 +4,8 @@ import java.security.KeyStore;
 import javax.net.ssl.*;
 
 class MyTLSFileServer {
+    //private BufferedReader reader;
+
     public static void main(String[] args) {
         try {
             int port = Integer.parseInt(args[0]);
@@ -19,9 +21,9 @@ class MyTLSFileServer {
             String EnabledProtocols[] = {"TLSv1.2", "TLSv1.1"};
             ss.setEnabledProtocols(EnabledProtocols);
             SSLSocket s = (SSLSocket)ss.accept();
-            
-            InputStream in = s.getInputStream();
-            System.out.print(in.read());
+            BufferedReader reader = new BufferedReader(new InputStreamReader( s.getInputStream()));
+            //InputStream in = s.getInputStream();
+            System.out.print(reader.readLine());
         
             s.close();
 
