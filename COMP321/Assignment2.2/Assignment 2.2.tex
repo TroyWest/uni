@@ -1,0 +1,66 @@
+\documentclass[10pt]{scrreprt}
+
+\usepackage{datetime}
+\usepackage{fancyvrb}
+\usepackage{rotating}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\RecustomVerbatimCommand{\VerbatimInput}{VerbatimInput}%
+{fontsize=\footnotesize,
+%
+frame=lines,
+framesep=1em,
+ label=\fbox{ExperimenterOutput.txt}
+}
+
+\title{Assignment 2.2 SVM and Decision Trees}
+\author{Troy Dean - 0222566}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Introduction}
+For this assignment we were required to run an experiment on three supplied datasets to compare four different simple linear classifiers. The data sets used were the pima diabetes, ionosphere and sonar datasets from \href{https://sourceforge.net/projects/weka/files/datasets/datasets-UCI/datasets-UCI.jar}{datasets}. The experiment compared Fischer's Linear Discriminant Analysis (FLDA), Simple Logistic, Multilayer Perceptron and LibSVM functions using the WEKA Experimenter.
+
+\section{Analysis of Experimenter Results}
+Running the experimenter accross the supplied datasets using FLDA, Simple Logistic, Multilayer Perceptron and LibSVM functions produced the output seen in the appendix~\ref{ch:appendix}.
+
+\section{Analysis of Visual Boundaries}
+\begin{figure}[h]
+\begin{center}
+%\includegraphics[scale=0.4]{"Diabetes FLDA Boundary Vis".PNG}
+%\includegraphics[scale=0.4]{"Diabetes Simple Logistic Boundary Vis".PNG}
+\end{center}
+\caption{Simple Logistic Boundary Visualization - X: plas, Y: mass}
+\end{figure}
+\begin{figure}[h]
+\begin{center}
+\centering
+%\includegraphics[scale=0.4]{"Diabetes Multilayer Preceptron Boundary Vis".PNG}
+\end{center}
+\caption{Multilayer Perceptron Boundary Visualization - X: plas, Y: mass}
+\end{figure}
+\begin{figure}[h]
+\begin{center}
+\centering
+%\includegraphics[scale=0.4]{"Diabetes LibSVM Boundary Vis".PNG}
+\end{center}
+\caption{LibSVM Boundary Visualization - X: plas, Y: mass}
+\end{figure}
+Running the J48 classifier on the diabetes dataset and looking at the resulting tree showed that the two most informative features (according to J48) are plas and mass. Figure 1 shows the results of using these to do a boundary visualisation on the diabetes dataset. We can see that the boundary is a slightly arched line sloping from the top down to the X axes, splitting the graph roughly in half along the diagonal. There is quite a wide band of overlap into the green (tested positive) region.
+
+
+\section{Choosing a Classifier}
+The experiment and boundary visualisation have shown that accuracy will not help to decide on a classifier for these data sets. As such looking at other factors is necessary. FLDA and Simple logistic classifiers are fast and efficient and produce relatively easy to interpret and explain models. This makes them ideal for datasets such as the diabetes data where a clear explanation of the models decisions is a crucial feature of the model. 
+
+\appendix
+\chapter{Experimenter Output}
+\label{ch:appendix} 
+\VerbatimInput{ExperimenterOutput.txt}
+
+
+
+\end{document}
