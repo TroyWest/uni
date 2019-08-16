@@ -6,6 +6,8 @@
             aseq = aseq "M";
         } else if (seq ~ /TT(T|C)/){
             aseq = aseq "F";
+        } else if (seq ~ /TT(A|G)/){
+            aseq = aseq "L";
         } else if (seq ~ /TC./) {
             aseq = aseq "S";
         } else if (seq ~ /TA(T|C)/) {
