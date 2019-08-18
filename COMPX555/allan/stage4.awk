@@ -1,3 +1,4 @@
+#!/usr/bin/awk -f
 {
     aseq = "";
     for(i=1; i < length($0); (i = i + 3)){
@@ -56,5 +57,7 @@
         
 
     }
-    print aseq;
+    if(length(aseq) > 30){
+        print aseq;
+    }
 }
